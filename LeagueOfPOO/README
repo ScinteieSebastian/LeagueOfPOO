@@ -1,0 +1,53 @@
+--------------------------------README-----------------------------------------
+	
+		Pentru implementarea temei m-am folosit de fundamente java precum
+	constructori, agregare, mostenire dar si desing orientat-obiect
+		Pentru realizarea temei am implementat doua clase abstracte in care
+	am definit toate metodele necesare pentru erou si pentru abilitatiel acestora,
+	si o clasa Round in care se desfasoara rutina unei runde din joc iar in clasa
+	main am realizat citirea, scrierea in fisier si desfasurarea rundelor unui joc.
+		Clasele abstracte componente sunt:
+			Player din care deriva:
+				->Pyromancer
+				->Knight
+				->Wizard
+				->Rogue
+			Abilities din care deriva:
+				->PyromancerAbilities
+				->KnightAbilities
+				->WizardAbilities
+				->RogueAbilities
+		Clase necesare desfasurarii jocului:
+				->Round
+				->FactoryGenerator
+				->Map
+				->Main
+	- Clasa Player este o clasa abstracta in care am definit metodele abstracte necesare unui obiect de tip player, pentru a nu ma repeta voi eplica aici functionalitatea pentru fiecare metoda ele avand in principiu acelasi rol pentru fiecare clasa derivata din aceasta clasa :
+		- groundModify : returneaza bonusul dat de teren pentru in functie de tipul player -ului
+		- setPlayerDead : scoate player -ul de pe harta si ii trece booleanul is Dead pe true
+		- abilityEffect : se ocupa de Dot si de stun
+		- levelUp : face levelUp pentru un player adica ii creste viata, o reseteaza pe cea curenta si face update in abilitati
+		- dealDmg / dealDmgWthoutModify : calculeaza damage -ul pe care urmeaza sa l dea si il aplica adversarului cu / fara modificatorul de rasa
+	- Clasa Abilities este o clasa abstracta in care am definit metodele necesare unei perechi de abilitati specifice pentru un tip de player :
+		- modify / modify2 calculeaza modificatorul de rasa pentru o abilitate
+		- levelUp adauga plusul de damage abilitatilor in functie de cate nivele evolueaza player -ul
+		- getTotalDmg / getTotalDmgWithoutModify : calculeaza damage -ul total a celor doua abilitati cu / fara modificatorul de rasa
+	- Clasele din ierarhia Abilities au fiecare cate doua metode specifice reprezentad cele doua abilitati pe care le poseda player -ul, ele fiind :
+		- fireblast care returneaza baseDmg la care se inmulteste modificatorul de rasa
+		- ignite care returneaza baseDmg inmultit cu modificatorul de rasa si seteaza Dot si numarul de runde pentru player -ul advers
+		- slam returneaza baseDmg inmultit cu modificatorul de rasa si seteaza ca urmatoare runda player -ul advers sa primeasca stun
+		- execute verifica daca viata player -ului advers este sub 20% daca da returneaza un damage egal cu viata ramasa, iar daca nu returneaza un baseDmg
+		- drain care verifica situatia hp -ului curent dupa care returneaza un procent sin acesta
+		- deflect returneaza un procent din damage -ul total dat de adversar fara modificatorii de rasa
+		- backstab returneaza un baseDmg si din 3 in 3 runde daca se afla pe teren Woods returneaza un damage critic 
+		- paralysis returneaza un baseDmg si seteaza Dot numarul de runde pentru care i se aplica efectul si stun pentru player -ul inamic
+		- Clase necesare desfasurarii jocului :
+			- FactoryGenerator returneaza un anumit tip de player in functie de o strategie(e.g. P, K, W, R)
+			- Map genereaza o matrice care reprezinta harta pe care o sa se desfasoare jocul, iar pe fiecare celula se afla un anumit tip de teren
+			- Round contine doua metode :
+				- combat - unde se desfasoara lupta dintre doua instante player : isi dau ambii damage -ul dupa care se verifica daca unul dintre ei a castigat, daca da acesta primeste xp -ul eventual poate face levelUp si celalalt player este scos de pe harta si setat ca isDead
+				- gameRound - unde se desfasoara o runda din joc : 
+				se da Dot -ul se fac mutarile player -ilor dupa care se verifica daca doi se afla pe aceeasi pozitie, daca da se aplica functia de combat pentru ce doi.
+			- Main - in aceasta clasa am metoda main unde am realizat citirea si scrierea in fisier si desfasurarea jocului cu ajutorul clasei Round.
+	
+
